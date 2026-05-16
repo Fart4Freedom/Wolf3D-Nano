@@ -52,7 +52,7 @@ float playerY = WL6_PLAYER_Y;
 float playerDirX = WL6_PLAYER_DIR_X;
 float playerDirY = WL6_PLAYER_DIR_Y;
 float planeX =  WL6_PLAYER_PLANE_X;
-float planeY = FOV; //WL6_PLAYER_PLANE_Y;
+float planeY = WL6_PLAYER_PLANE_Y; // FOV
 float moveSpeed = 0.3f;
 float rotSpeed = 0.3f;
 
