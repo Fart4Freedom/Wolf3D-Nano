@@ -52,7 +52,7 @@ float playerY = WL6_PLAYER_Y;
 float playerDirX = WL6_PLAYER_DIR_X;
 float playerDirY = WL6_PLAYER_DIR_Y;
 float planeX =  WL6_PLAYER_PLANE_X;
-float planeY = WL6_PLAYER_PLANE_Y;
+float planeY = FOV; //WL6_PLAYER_PLANE_Y;
 float moveSpeed = 0.3f;
 float rotSpeed = 0.3f;
 
@@ -385,8 +385,6 @@ inline bool canMoveTo(float x, float y) {
                 continue;
             }
 
-            // Pushwalls are solid for now. If you implement moving pushwalls,
-            // special-case them here based on wl6_pushwalls[].
             if (isWallTile(tile) || isSpecialSolidTile(tile)) {
                 float dx = x - (mapX + 0.5f);
                 float dy = y - (mapY + 0.5f);
