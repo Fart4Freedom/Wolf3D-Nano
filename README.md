@@ -106,8 +106,9 @@ This project is non-commercial and experimental.
 Distributed under the **MIT License**. See `LICENSE` for more information.
 
 ## 📸 Screenshots
+## 📺 Demo
 
-*Coming Soon...*
+[![Watch the demo on YouTube](assets/demo.png)](https://www.youtube.com/shorts/PA6-Ki86W4w)
 
 ---
 
