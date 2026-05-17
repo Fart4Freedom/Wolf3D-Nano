@@ -34,7 +34,7 @@ Display selection is handled via `#define` statements in `config.h`.
 | Category | Supported Models |
 | :--- | :--- |
 | **OLED** | `SSD1331_96X64`, `SSD1351_128X128` |
-| **TFT (ST77XX)** | `ST7735` (various sizes), `ST7789` (240x135, 240x240, 170x320) |
+| **TFT (ST77XX)** | `ST7735` (various sizes), `ST7789` (160*80, 240x135, 240x240, 170x320) |
 | **TFT (ILI)** | `ILI9342_320X240` |
 
 ## 🚀 Performance
