@@ -1,208 +1,117 @@
+# Wolf3D-Nano 🐺🕹️
 
-Wolf3D-style raycaster for Arduino Nano (ATmega328P) and SPI TFT/OLED color displays
-#Wolf3D-Nano
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Platform: PlatformIO](https://img.shields.io/badge/Platform-PlatformIO-blue.svg)](https://platformio.org/)
+[![MCU: ATmega328P](https://img.shields.io/badge/MCU-ATmega328P-orange.svg)](https://www.arduino.cc/en/Main/ArduinoBoard.html)
 
-Wolf3D-style raycaster for Arduino Nano (ATmega328P) and SPI TFT/OLED color displays.
+An experimental Wolf3D-style raycaster designed to run on the **Arduino Nano (ATmega328P)** and other resource-constrained AVR microcontrollers using SPI TFT/OLED displays.
 
-This is **not** a full Wolfenstein 3D port.
-It is an experimental AVR raycasting project focused on exploring the first episode Wolf3D-style maps on tiny microcontrollers with extremely limited RAM and flash storage.
-
-The project currently targets the **Arduino Nano / ATmega328P** running at 16MHz using small SPI displays such as the SSD1331 OLED and ST77XX TFT displays.
-
-The goal is simple:
-
-> How far can we push an 8-bit AVR before the hardware completely gives up? 😄
+> **The Mission:** How far can we push an 8-bit AVR before the hardware completely gives up?
 
 ---
 
-# Current Features
+## ⚠️ Disclaimer
+This is **not** a full Wolfenstein 3D port. It is an experimental project focused on implementing the core raycasting engine and Episode 1 map logic on hardware with extremely limited RAM (2KB) and Flash (32KB).
 
-* Wolf3D-style textured raycaster
-* Episode 1 maps (E1M1-E1M10)
-* Multiple SPI TFT/OLED display configurations
-* Indexed 8-bit textures + RGB565 palette rendering
-* Doors with opening/closing support
-* Collision detection
-* Elevators/exits
-* Optional noclip mode
-* Direct SPI register rendering for speed
-* Chunked rendering to fit inside 2KB RAM
+## ✨ Features
 
----
+* **Raycasting Engine:** Wolf3D-style textured rendering.
+* **Map Support:** Full Episode 1 maps (E1M1–E1M10) supported (one level per build).
+* **Optimized Rendering:** 
+    * Indexed 8-bit textures + RGB565 palette rendering.
+    * Direct SPI register manipulation for maximum throughput.
+    * Chunked rendering to fit within the 2KB RAM limit.
+* **Gameplay Mechanics:** 
+    * Collision detection.
+    * Doors (automatic opening/closing).
+    * Elevators and exits.
+    * Optional **Noclip mode**.
 
-# Supported Displays
+## 🖥️ Supported Displays
 
-Display selection is done in `config.h`.
+Display selection is handled via `#define` statements in `config.h`.
 
-Currently tested/supported configurations:
+| Category | Supported Models |
+| :--- | :--- |
+| **OLED** | `SSD1331_96X64`, `SSD1351_128X128` |
+| **TFT (ST77XX)** | `ST7735` (various sizes), `ST7789` (240x135, 240x240, 170x320) |
+| **TFT (ILI)** | `ILI9342_320X240` |
 
+## 🚀 Performance
 
-//#define ST7735_160X80_BLUE_PCB
-//#define ST7735_160X80_BLACK_PCB
-//#define ST7735_160X128
-//#define ST7789_240X135
-//#define ST7789_240X240
-//#define ST7789_240X240_240X150
-//#define ST7735_128X128
-//#define ST7789_170X320
-//#define ILI9342_320X240
+*Tested on ATmega328P @ 16MHz. Note that SPI bandwidth is often the primary bottleneck.*
 
-// OLED displays
-#define SSD1331_96X64
-//#define SSD1351_128X128
+| Display Configuration | Approx. FPS |
+| :--- | :--- |
+| **SSD1331 (96x64)** | ~9–12 FPS |
+| **ST7735 (128x128)** | ~5–7 FPS |
+| **ST7735 (128x128) w/ COLUMN_SKIP** | ~10–11 FPS |
+| **ST7735 (160x80)** | ~10–11 FPS |
 
+## 🕹️ Controls
 
----
+Current prerelease versions utilize a 4-button interface:
+* **Forward / Backward**
+* **Rotate Left / Rotate Right**
 
-# Performance
+*Note: Doors currently open automatically when the player is in range. A dedicated "Action/Use" button is planned for future updates.*
 
-Approximate FPS on ATmega328P @ 16MHz:
+## 🛠️ Hardware Requirements
 
-| Display                         | FPS        |
-| ------------------------------- | ---------- |
-| SSD1331 96x64                   | ~9-12 FPS  |
-| ST7735 128x128                  | ~5-7 FPS   |
-| ST7735 128x128 with COLUMN_SKIP | ~10-11 FPS |
-| ST7735 160x80                   | ~10-11 FPS |
+* **Primary Target:** Arduino Nano (ATmega328P).
+* **Recommended (Experimental):** LGT8F328P @ 32MHz (for higher FPS).
+* **Display:** Any SPI-based TFT or OLED supported in `config.h`.
 
-The biggest bottleneck is currently SPI display bandwidth, not only the raycaster itself.
+## 🏗️ Build System
 
----
+This project is built using **[PlatformIO](https://platformio.org/)**. 
+*Arduino IDE compatibility is planned for a future release.*
 
-# Controls
+## 🧠 Technical Constraints & Challenges
 
-Current prerelease versions use 4 buttons:
+The ATmega328P is a tiny beast to tame:
+* **Flash (32KB):** Extremely tight. Only one level can be compiled into the binary at a time.
+* **RAM (2KB):** Requires aggressive optimization. Rendering must be chunked to prevent stack overflow.
 
-* Forward
-* Backward
-* Rotate Left
-* Rotate Right
+### Current Limitations (Prerelease)
+- [x] No enemy sprites
+- [x] No decorations or keys
+- [x] No sound/music
+- [x] No multi-level progression (one level per upload)
 
-Doors currently open automatically when standing in front of them.
+## 🗺️ Roadmap & Experiments
 
-A dedicated action/use button will be added later.
+The goal is not practicality; it is absurdity. Future experiments include:
+- [ ] **Pushwalls** and locked doors with keys.
+- [ ] **Enhanced Rendering:** Floor/ceiling textures and 8bpp SSD1331 optimization.
+- [ ] **External Storage:** Using W25Q SPI Flash for asset storage.
+- [ ] **Distributed Computing:** 
+    - Dual/Triple/Quad Arduino Nano configurations.
+    - Using secondary MCUs as "Sprite Coprocessors" to handle rendering via SPI.
 
----
+## 🤔 Why not use an ESP32 or RP2040?
 
-# Hardware
+**Because they are too easy.**
 
-Tested hardware:
+ESP32, RP2040, and ESP8266 are already significantly more powerful than the original PCs Wolf3D ran on. The fun in this project is forcing a 30-year-old architecture to perform tasks it was never meant to handle.
 
-* Arduino Nano (ATmega328P)
+## ⚖️ Assets & Legal
 
-Experimental/planned support:
+This project is non-commercial and experimental. 
+* Some map/texture data may originate from Wolfenstein 3D shareware assets.
+* Wolfenstein 3D and all related assets belong to their respective owners.
 
-* LGT8F328P @ 32MHz
-  (Recommended for future higher FPS versions)
+## 📜 License
 
-The renderer uses direct AVR port manipulation for speed, so some boards may require adjustments.
+Distributed under the **MIT License**. See `LICENSE` for more information.
 
----
+## 📸 Screenshots
 
-# Build System
-
-The project currently uses:
-
-* PlatformIO
-
-Arduino IDE compatibility is planned later.
-
----
-
-# Memory Limitations
-
-ATmega328P only has:
-
-* 32KB flash
-* 2KB RAM
-
-After the bootloader and textures/maps are included, flash space becomes extremely limited.
-
-Because of this:
-
-* Only one level can currently be compiled/uploaded at a time
-* Rendering is heavily optimized for low RAM usage
-* Many features are intentionally simplified or removed
-
-This project exists because trying to force Wolf3D-style rendering onto tiny 8-bit hardware is fun 😄
+*Coming Soon...*
 
 ---
 
-# Current Limitations
+**Project Status:** 🧪 *Very Experimental Prerelease.*
+*The codebase changes frequently as new optimization techniques are discovered. Pull requests and crazy AVR optimization ideas are always welcome!*
 
-This prerelease version currently has:
-
-* No enemy sprites
-* No decorations
-* No keys
-* No save system
-* No sound/music
-* No multi-level progression
-
-The player explores one compiled level at a time.
-
----
-
-# Planned Features / Experiments
-
-Future experimental versions may include:
-
-* Pushwalls
-* Keys and locked doors
-* 8bpp SSD1331 renderer
-* Floor and ceiling textures
-* SPI flash asset storage
-* Multi-AVR rendering systems
-* Dual/Triple/Quad Arduino Nano versions
-* Sprite coprocessor MCUs
-* BSP experiments
-* "Maybe Doom on multiple AVR chips?" 😄
-
-The goal is not practicality.
-
-The goal is seeing how absurdly far small AVR hardware can be pushed.
-
----
-
-# Why Not ESP32/RP2040?
-
-Because they are too easy 😄
-
-ESP32, RP2040, ESP8266 and similar MCUs are already far more powerful than the PCs Wolf3D originally ran on.
-(I already made a ESP8266/ESP32/RP2040 Wolf4SDL port)
-
-The fun here is trying to make something barely possible on hardware that absolutely should not be doing this.
-
----
-
-# Assets / Legal Notes
-
-This project is non-commercial and experimental.
-
-Some generated map/texture data may originate from Wolfenstein 3D shareware assets.
-
-If needed, the asset headers can later be replaced by externally generated data/tools.
-
-Wolfenstein 3D and related assets belong to their respective owners.
-
----
-
-# License
-
-MIT License
-
----
-
-# Screenshots
-
-(Add screenshots here later 😄)
-
----
-
-# Project Status
-
-Very experimental prerelease.
-
-The codebase changes often while testing new rendering ideas and memory-saving techniques.
-
-Pull requests, crazy optimization ideas, and weird AVR experiments are welcome.
+> **Note:** README generated by Gemma4 26B.
